@@ -1,0 +1,23 @@
+{
+    "name": "gilbitron/handle",
+    "description": "A CLI based static site generator in PHP",
+    "authors": [
+        {
+            "name": "Gilbert Pellegrom",
+            "email": "gilbert@pellegrom.me"
+        }
+    ],
+    "require": {
+        "symfony/console": "^3.0",
+        "windwalker/renderer": "^2.1",
+        "illuminate/view": "^5.2",
+        "erusev/parsedown": "^1.6",
+        "symfony/yaml": "^3.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Handle\\": "src/"
+        }
+    }
+}
