@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+define('HANDLE_ROOT', dirname(__DIR__));
+
+require HANDLE_ROOT . '/vendor/autoload.php';
+
+$app = new \Symfony\Component\Console\Application('Handle', '@package_version@');
+$app->add(new \Handle\Commands\InitCommand());
+$app->add(new \Handle\Commands\BuildCommand());
+$app->run();
