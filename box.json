@@ -1,0 +1,26 @@
+{
+	"chmod": "0755",
+	"directories": [
+		"init-structure",
+		"src"
+	],
+	"files": [
+		"LICENSE"
+	],
+	"finder": [
+		{
+			"name": "*.php",
+			"exclude": [
+				"test",
+				"tests",
+				"Test",
+				"Tests"
+			],
+			"in": "vendor"
+		}
+	],
+	"git-version": "package_version",
+	"main": "bin/handle",
+	"output": "handle.phar",
+	"stub": true
+}
