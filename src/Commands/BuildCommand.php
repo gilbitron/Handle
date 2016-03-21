@@ -25,9 +25,7 @@ class BuildCommand extends Command
 
     protected function configure()
     {
-        $this->setName('build')
-            ->setDescription('Build your Handle site by generating the static output')
-            ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path to your Handle site');
+        $this->setName('build')->setDescription('Build your Handle site by generating the static output')->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path to your Handle site');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -39,21 +37,24 @@ class BuildCommand extends Command
 
         try {
             $config = $this->getConfig($path);
-            if (!is_dir($path . '/themes/' . $config['theme'])) {
+            if (!is_dir($path . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $config['theme'])) {
                 throw new \Exception('The theme "/themes/' . $config['theme'] . '" does not exist');
             }
 
-            $renderer = $this->getRenderer($path . '/themes/' . $config['theme']);
+            $renderer = $this->getRenderer($path . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $config['theme']);
 
-            $contentFiles = $this->getContentFiles($path . '/content');
+            $output->writeln('Cleaning /public...');
+            $this->cleanBuiltContent($path . DIRECTORY_SEPARATOR . 'public');
+
+            $contentFiles = $this->getContentFiles($path . DIRECTORY_SEPARATOR . 'content');
             foreach ($contentFiles as $contentFile) {
                 $content       = file_get_contents($contentFile);
                 $meta          = $this->parseMeta($content);
                 $parsedContent = $this->parseContent($content);
 
                 $filename     = basename($contentFile, '.md');
-                $filepath     = str_replace($path . '/content', $path . '/public', dirname($contentFile));
-                $fullFilepath = $filepath . '/' . $filename . '.html';
+                $filepath     = str_replace($path . DIRECTORY_SEPARATOR . 'content', $path . DIRECTORY_SEPARATOR . 'public', dirname($contentFile));
+                $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
 
                 if (!is_dir($filepath)) {
                     mkdir($filepath, 0777, true);
@@ -66,7 +67,7 @@ class BuildCommand extends Command
                 ]);
                 file_put_contents($fullFilepath, $html);
 
-                $output->writeln(str_replace($path . '/public', '', $fullFilepath) . ' generated...');
+                $output->writeln(str_replace($path . DIRECTORY_SEPARATOR . 'public', '', $fullFilepath) . ' generated...');
             }
 
             $output->writeln('<info>Finished building site</info>');
@@ -83,8 +84,8 @@ class BuildCommand extends Command
      */
     protected function getConfig($sitePath)
     {
-        if (file_exists($sitePath . '/config.yml')) {
-            $config = file_get_contents($sitePath . '/config.yml');
+        if (file_exists($sitePath . DIRECTORY_SEPARATOR . 'config.yml')) {
+            $config = file_get_contents($sitePath . DIRECTORY_SEPARATOR . 'config.yml');
 
             $yaml         = new YamlParser();
             $parsedConfig = $yaml->parse($config);
@@ -109,7 +110,25 @@ class BuildCommand extends Command
      */
     protected function getRenderer($themePath)
     {
-        return new BladeRenderer([$themePath], ['cache_path' => $themePath . '/cache']);
+        return new BladeRenderer([$themePath], ['cache_path' => $themePath . DIRECTORY_SEPARATOR . 'cache']);
+    }
+
+    /**
+     * Clean all previously built files
+     *
+     * @param string $publicPath
+     */
+    protected function cleanBuiltContent($publicPath)
+    {
+        $rdi = new \RecursiveDirectoryIterator($publicPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $rii = new \RecursiveIteratorIterator($rdi, \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($rii as $fileInfo) {
+            if ($fileInfo->isDir()) {
+                rmdir($fileInfo->getRealPath());
+            } else {
+                unlink($fileInfo->getRealPath());
+            }
+        }
     }
 
     /**
