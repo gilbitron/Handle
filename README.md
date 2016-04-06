@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/gilbitron/Handle.svg?branch=master)](https://travis-ci.org/gilbitron/Handle)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+
 # Handle
 
 A CLI based static site generator in PHP.
@@ -62,12 +65,12 @@ handle build
 
 The structure of the files in the `content` folder will be honoured in the generated site. For example:
  
- | File Location | Site URL |
- | ------------- | -------- |
- | `content/index.md` | `/` |
- | `content/about.md` | `/about` |
- | `content/work/index.md` | `/work` |
- | `content/work/project.md` | `/work/project` |
+ File Location             | Site URL       
+ ------------------------- | ---------------
+ `content/index.md`        | `/`            
+ `content/about.md`        | `/about`       
+ `content/work/index.md`   | `/work`        
+ `content/work/project.md` | `/work/project`
  
 ## Customization
  
