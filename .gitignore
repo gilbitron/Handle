@@ -2,7 +2,8 @@
 /vendor
 /init-structure/themes/default/cache
 composer.lock
-.travis/phar-private.pem
+.travis/*.pem
+.travis/secrets.tar
 handle.phar
 handle.phar.pubkey
 handle.phar.version
