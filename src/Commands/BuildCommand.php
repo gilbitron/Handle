@@ -126,14 +126,17 @@ class BuildCommand extends Command
      *
      * @param string $publicPath
      */
-    protected function cleanBuiltContent($publicPath)
+    protected function cleanBuiltContent($publicPath, OutputInterface $output)
     {
+        if (!is_dir($publicPath)) {
+            return;
+        }
+
         $rdi = new \RecursiveDirectoryIterator($publicPath, \RecursiveDirectoryIterator::SKIP_DOTS);
         $rii = new \RecursiveIteratorIterator($rdi, \RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($rii as $fileInfo) {
-            if ($fileInfo->isDir()) {
-                rmdir($fileInfo->getRealPath());
-            } else {
+            if ($fileInfo->isFile() && $fileInfo->getExtension() == 'html') {
+                $output->writeln('Removing file: ' . str_replace($publicPath, '', $fileInfo->getRealPath()) . '...');
                 unlink($fileInfo->getRealPath());
             }
         }
