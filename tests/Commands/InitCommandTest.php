@@ -22,8 +22,8 @@ class InitCommandTest extends HandleTestCase
             'path'    => $this->sitePath,
         ]);
 
-        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . '.htaccess');
         $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'config.yml');
+        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . '.htaccess');
         $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . 'content'));
         $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . 'public'));
         $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . 'themes'));
