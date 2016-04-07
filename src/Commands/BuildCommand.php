@@ -170,7 +170,8 @@ class BuildCommand extends Command
      */
     protected function parseMeta($content)
     {
-        list($meta, $contents) = preg_split('/\-{3,}/m', $content, 2);
+        $parts = preg_split('/\-{3,}/m', $content, 2);
+        $meta  = isset($parts[0]) ? $parts[0] : '';
 
         $yaml       = new YamlParser();
         $parsedMeta = $yaml->parse($meta);
@@ -194,7 +195,8 @@ class BuildCommand extends Command
      */
     protected function parseContent($content)
     {
-        list($meta, $contents) = preg_split('/\-{3,}/m', $content, 2);
+        $parts    = preg_split('/\-{3,}/m', $content, 2);
+        $contents = isset($parts[1]) ? $parts[1] : '';
 
         if ($contents) {
             return Parsedown::instance()->text(trim($contents));
