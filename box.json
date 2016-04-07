@@ -1,5 +1,4 @@
 {
-	"algorithm": "OPENSSL",
 	"chmod": "0755",
 	"compression": "GZ",
 	"directories": [
@@ -22,7 +21,6 @@
 		}
 	],
 	"git-version": "package_version",
-	"key": ".travis/phar-private.pem",
 	"main": "bin/handle",
 	"output": "handle.phar",
 	"stub": true
