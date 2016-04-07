@@ -16,6 +16,7 @@ class BuildCommand extends Command
     protected $configDefaults = [
         'site_title' => 'Handle',
         'theme'      => 'default',
+        'build_dir'  => 'public',
     ];
 
     protected $metaDefaults = [
@@ -36,15 +37,22 @@ class BuildCommand extends Command
         }
 
         try {
-            $config = $this->getConfig($path);
+            $config              = $this->getConfig($path);
+            $config['build_dir'] = trim($config['build_dir'], DIRECTORY_SEPARATOR);
+
             if (!is_dir($path . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $config['theme'])) {
                 throw new \Exception('The theme "/themes/' . $config['theme'] . '" does not exist');
             }
 
             $renderer = $this->getRenderer($path . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $config['theme']);
 
-            $output->writeln('Cleaning /public...');
-            $this->cleanBuiltContent($path . DIRECTORY_SEPARATOR . 'public');
+            $buildDirDisplay = $config['build_dir'];
+            if (!$buildDirDisplay) {
+                $buildDirDisplay = '/';
+            }
+
+            $output->writeln('Cleaning ' . $buildDirDisplay . '...');
+            $this->cleanBuiltContent($path . DIRECTORY_SEPARATOR . $config['build_dir'], $output);
 
             $contentFiles = $this->getContentFiles($path . DIRECTORY_SEPARATOR . 'content');
             foreach ($contentFiles as $contentFile) {
@@ -53,7 +61,7 @@ class BuildCommand extends Command
                 $parsedContent = $this->parseContent($content);
 
                 $filename     = basename($contentFile, '.md');
-                $filepath     = str_replace($path . DIRECTORY_SEPARATOR . 'content', $path . DIRECTORY_SEPARATOR . 'public', dirname($contentFile));
+                $filepath     = str_replace($path . DIRECTORY_SEPARATOR . 'content', $path . DIRECTORY_SEPARATOR . $config['build_dir'], dirname($contentFile));
                 $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
 
                 if (!is_dir($filepath)) {
@@ -67,7 +75,7 @@ class BuildCommand extends Command
                 ]);
                 file_put_contents($fullFilepath, $html);
 
-                $output->writeln(str_replace($path . DIRECTORY_SEPARATOR . 'public', '', $fullFilepath) . ' generated...');
+                $output->writeln(str_replace($path . DIRECTORY_SEPARATOR . $config['build_dir'], '', $fullFilepath) . ' generated...');
             }
 
             $output->writeln('<info>Finished building site</info>');
