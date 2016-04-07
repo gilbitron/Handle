@@ -8,4 +8,6 @@ require HANDLE_ROOT . '/vendor/autoload.php';
 $app = new \Symfony\Component\Console\Application('Handle', '@package_version@');
 $app->add(new \Handle\Commands\InitCommand());
 $app->add(new \Handle\Commands\BuildCommand());
+$app->add(new \Handle\Commands\UpdateCommand());
+$app->add(new \Handle\Commands\RollbackCommand());
 $app->run();
