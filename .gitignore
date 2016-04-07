@@ -2,3 +2,7 @@
 /vendor
 /init-structure/themes/default/cache
 composer.lock
+.travis/phar-private.pem
+handle.phar
+handle.phar.pubkey
+handle.phar.version
