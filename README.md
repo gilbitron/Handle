@@ -14,7 +14,7 @@ A CLI based static site generator in PHP.
 First, download `handle.phar` using `wget` or `curl`. For example:
 
 ```
-curl -O https://raw.githubusercontent.com/gilbitron/Handle/master/handle.phar
+curl -O https://raw.githubusercontent.com/gilbitron/Handle/gh-pages/handle.phar
 ```
 
 Then, check if it works:
