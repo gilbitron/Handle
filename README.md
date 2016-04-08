@@ -11,10 +11,11 @@ A CLI based static site generator in PHP.
 
 ## Install
 
-First, download `handle.phar` using `wget` or `curl`. For example:
+First, download the latest version using `wget` or `curl` and extract the `phar` file and the public key. For example:
 
 ```
-curl -O https://raw.githubusercontent.com/gilbitron/Handle/gh-pages/handle.phar
+curl -O https://raw.githubusercontent.com/gilbitron/Handle/gh-pages/handle.tar.gz
+tar -zxvf handle.tar.gz
 ```
 
 Then, check if it works:
@@ -29,11 +30,14 @@ make the file executable and move it to somewhere in your `PATH`. For example:
 ```
 chmod +x handle.phar
 sudo mv handle.phar /usr/local/bin/handle
+sudo mv handle.phar.pubkey /usr/local/bin/handle.pubkey
 ```
 
 Now try running `handle`.
 
-Upgrade using the same procedure.
+#### Updates
+
+Updates can be done using the `handle update` command. Updates can be rolled back using the `handle rollback` command.
 
 ## Usage
 
@@ -48,29 +52,29 @@ handle init
 
 The following folders and files should now be available:
 
-* `content` - This is the location of the [Markdown](https://en.wikipedia.org/wiki/Markdown) files that represent the pages on your site.
-* `public` - This is where your generated site (HTML) will be output. Your [Virtual Host](https://httpd.apache.org/docs/2.4/vhosts/) should be pointed here.
-* `themes` - This contains the [Blade](https://laravel.com/docs/5.1/blade) themes that are used to generate your site HTML.
+* `_cache` - Cache location. This should be writeable.
+* `_content` - This is the location of the [Markdown](https://en.wikipedia.org/wiki/Markdown) files that represent the pages on your site.
+* `_themes` - This contains the [Blade](https://laravel.com/docs/5.1/blade) themes that are used to generate your site HTML.
 * `.htaccess` - If you're using Apache this will strip the `.html` from your URLs.
 * `config.yml` - This stores your site configuration.
 
 ### Build Command
 
-The `build` command will generate a static site (HTML files) from the Markdown files in your `content` folder. For example:
+The `build` command will generate a static site (HTML files) from the Markdown files in your `_content` folder. For example:
 
 ```
 cd /var/www
 handle build
 ```
 
-The structure of the files in the `content` folder will be honoured in the generated site. For example:
+The structure of the files in the `_content` folder will be honoured in the generated site. For example:
  
  File Location             | Site URL       
  ------------------------- | ---------------
- `content/index.md`        | `/`            
- `content/about.md`        | `/about`       
- `content/work/index.md`   | `/work`        
- `content/work/project.md` | `/work/project`
+ `_content/index.md`        | `/`            
+ `_content/about.md`        | `/about`       
+ `_content/work/index.md`   | `/work`        
+ `_content/work/project.md` | `/work/project`
  
 ## Customization
  
