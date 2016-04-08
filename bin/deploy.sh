@@ -33,6 +33,10 @@ mv handle.phar.tmp handle.phar
 sha1sum handle.phar > handle.phar.version
 git add handle.phar handle.phar.version
 
+# Create download bundle
+tar -zcvf handle.tar.gz handle.phar handle.phar.pubkey
+git add handle.tar.gz
+
 # Commit and push:
 git commit -m 'Rebuilt phar'
 git push handle gh-pages:gh-pages
