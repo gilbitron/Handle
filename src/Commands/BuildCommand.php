@@ -223,6 +223,10 @@ class BuildCommand extends Command
      */
     private function prepPath($path, $default, $name)
     {
+        if (!$path) {
+            $path = $default;
+        }
+
         $path = realpath($path);
         if (!$path) {
             $path = $default;
