@@ -23,10 +23,10 @@ class InitCommandTest extends HandleTestCase
         ]);
 
         $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'config.yml');
-        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . '.htaccess');
-        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . 'content'));
-        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . 'public'));
-        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . 'themes'));
-        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'default'));
+        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . '.htaccess');
+        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . '_cache'));
+        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . '_content'));
+        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . '_themes'));
+        $this->assertTrue(is_dir($this->sitePath . DIRECTORY_SEPARATOR . '_themes' . DIRECTORY_SEPARATOR . 'default'));
     }
 }

@@ -29,7 +29,6 @@ class BuildCommandTest extends HandleTestCase
             '--path'  => $this->sitePath,
         ]);
 
-        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'index.md');
-        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'index.html');
+        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'index.html');
     }
 }
