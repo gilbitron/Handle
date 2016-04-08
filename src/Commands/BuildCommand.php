@@ -14,9 +14,12 @@ use Windwalker\Renderer\BladeRenderer;
 class BuildCommand extends Command
 {
     protected $configDefaults = [
-        'site_title' => 'Handle',
-        'theme'      => 'default',
-        'build_dir'  => 'public',
+        'site_title'   => 'Handle',
+        'theme'        => 'default',
+        'cache_path'   => '_cache',
+        'content_path' => '_content',
+        'themes_path'  => '_themes',
+        'build_path'   => '',
     ];
 
     protected $metaDefaults = [
@@ -39,31 +42,32 @@ class BuildCommand extends Command
         }
 
         try {
-            $config              = $this->getConfig($path);
-            $config['build_dir'] = trim($config['build_dir'], DIRECTORY_SEPARATOR);
+            $config = $this->getConfig($path);
 
-            if (!is_dir($path . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $config['theme'])) {
-                throw new \Exception('The theme "/themes/' . $config['theme'] . '" does not exist');
+            $config['cache_path']   = $this->prepPath($config['cache_path'], $path . DIRECTORY_SEPARATOR . '_cache', 'cache');
+            $config['content_path'] = $this->prepPath($config['content_path'], $path . DIRECTORY_SEPARATOR . '_content', 'content');
+            $config['themes_path']  = $this->prepPath($config['themes_path'], $path . DIRECTORY_SEPARATOR . '_themes', 'themes');
+            $config['build_path']   = $this->prepPath($config['build_path'], $path, 'build');
+
+            $themePath = $config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme'];
+            if (!is_dir($themePath)) {
+                throw new \Exception('The theme "' . $themePath . '" does not exist');
             }
 
-            $renderer = $this->getRenderer($path . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $config['theme']);
+            $renderer = $this->getRenderer($themePath, $config['cache_path']);
 
-            $buildDirDisplay = $config['build_dir'];
-            if (!$buildDirDisplay) {
-                $buildDirDisplay = '/';
-            }
+            $output->writeln('Cleaning...');
+            $this->cleanBuiltContent($config['build_path'], $output);
 
-            $output->writeln('Cleaning ' . $buildDirDisplay . '...');
-            $this->cleanBuiltContent($path . DIRECTORY_SEPARATOR . $config['build_dir'], $output);
-
-            $contentFiles = $this->getContentFiles($path . DIRECTORY_SEPARATOR . 'content');
+            $output->writeln('Building...');
+            $contentFiles = $this->getContentFiles($config['content_path']);
             foreach ($contentFiles as $contentFile) {
                 $content       = file_get_contents($contentFile);
                 $meta          = $this->parseMeta($content);
                 $parsedContent = $this->parseContent($content);
 
                 $filename     = basename($contentFile, '.md');
-                $filepath     = str_replace($path . DIRECTORY_SEPARATOR . 'content', $path . DIRECTORY_SEPARATOR . $config['build_dir'], dirname($contentFile));
+                $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile));
                 $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
 
                 if (!is_dir($filepath)) {
@@ -77,7 +81,7 @@ class BuildCommand extends Command
                 ]);
                 file_put_contents($fullFilepath, $html);
 
-                $output->writeln(str_replace($path . DIRECTORY_SEPARATOR . $config['build_dir'], '', $fullFilepath) . ' generated...');
+                $output->writeln(str_replace($config['build_path'], '', $fullFilepath) . ' generated...');
             }
 
             $output->writeln('<info>Finished building site</info>');
@@ -116,29 +120,30 @@ class BuildCommand extends Command
      * Get the renderer
      *
      * @param string $themePath
+     * @param string $cachePath
      * @return AbstractEngineRenderer
      */
-    protected function getRenderer($themePath)
+    protected function getRenderer($themePath, $cachePath)
     {
-        return new BladeRenderer([$themePath], ['cache_path' => $themePath . DIRECTORY_SEPARATOR . 'cache']);
+        return new BladeRenderer([$themePath], ['cache_path' => $cachePath]);
     }
 
     /**
      * Clean all previously built files
      *
-     * @param string $publicPath
+     * @param string $buildPath
      */
-    protected function cleanBuiltContent($publicPath, OutputInterface $output)
+    protected function cleanBuiltContent($buildPath, OutputInterface $output)
     {
-        if (!is_dir($publicPath)) {
+        if (!is_dir($buildPath)) {
             return;
         }
 
-        $rdi = new \RecursiveDirectoryIterator($publicPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $rdi = new \RecursiveDirectoryIterator($buildPath, \RecursiveDirectoryIterator::SKIP_DOTS);
         $rii = new \RecursiveIteratorIterator($rdi, \RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($rii as $fileInfo) {
             if ($fileInfo->isFile() && $fileInfo->getExtension() == 'html') {
-                $output->writeln('Removing file: ' . str_replace($publicPath, '', $fileInfo->getRealPath()) . '...');
+                $output->writeln('Removing file: ' . str_replace($buildPath, '', $fileInfo->getRealPath()) . '...');
                 unlink($fileInfo->getRealPath());
             }
         }
@@ -205,5 +210,27 @@ class BuildCommand extends Command
         }
 
         return $content;
+    }
+
+    /**
+     * Prep a path to make sure it exists and is absolute
+     *
+     * @param string $path
+     * @param string $default
+     * @param string $name
+     * @return string
+     * @throws \Exception
+     */
+    private function prepPath($path, $default, $name)
+    {
+        $path = realpath($path);
+        if (!$path) {
+            $path = $default;
+        }
+        if (!realpath($path)) {
+            throw new \Exception('The path to the ' . $name . ' directory does not exist: ' . $path);
+        }
+
+        return $path;
     }
 }
