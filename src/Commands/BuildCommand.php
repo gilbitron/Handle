@@ -26,7 +26,9 @@ class BuildCommand extends Command
 
     protected function configure()
     {
-        $this->setName('build')->setDescription('Build your Handle site by generating the static output')->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path to your Handle site');
+        $this->setName('build')
+             ->setDescription('Build your Handle site by generating the static output')
+             ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path to your Handle site');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

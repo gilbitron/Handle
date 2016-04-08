@@ -12,7 +12,9 @@ class InitCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('init')->setDescription('Create the Handle site structure in the given directory')->addArgument('path', InputArgument::OPTIONAL, 'Path to create your Handle site in');
+        $this->setName('init')
+             ->setDescription('Create the Handle site structure in the given directory')
+             ->addArgument('path', InputArgument::OPTIONAL, 'Path to create your Handle site in');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
