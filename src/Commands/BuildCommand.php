@@ -177,6 +177,10 @@ class BuildCommand extends Command
      */
     protected function parseMeta($content)
     {
+        if (!preg_match('/\-{3,}/m', $content)) {
+            return $this->metaDefaults;
+        }
+
         $parts = preg_split('/\-{3,}/m', $content, 2);
         $meta  = isset($parts[0]) ? $parts[0] : '';
 
