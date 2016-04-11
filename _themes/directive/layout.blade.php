@@ -7,6 +7,12 @@
 	<!--[if lte IE 8]><script src="_themes/directive/assets/js/ie/html5shiv.js"></script><![endif]-->
 	<link rel="stylesheet" href="_themes/directive/assets/css/main.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="_themes/directive/assets/css/ie8.css" /><![endif]-->
+
+	<script>
+	if (window.location.host == "gilbitron.github.io" && window.location.protocol != 'https:') {
+		window.location.protocol = 'https';
+	}
+	</script>
 </head>
 <body>
 
@@ -30,6 +36,9 @@
 
 			<header class="major last"></header>
 
+			<a class="github-button" href="https://github.com/gilbitron/Handle" data-icon="octicon-star" data-style="mega" data-count-href="/gilbitron/Handle/stargazers" data-count-api="/repos/gilbitron/Handle#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star gilbitron/Handle on GitHub">Star</a>
+			<br><br>
+
 			<ul class="icons">
 				<li><a href="https://twitter.com/gilbitron" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
 				<li><a href="https://github.com/gilbitron" class="icon fa-github"><span class="label">Github</span></a></li>
@@ -50,6 +59,8 @@
 	<script src="_themes/directive/assets/js/util.js"></script>
 	<!--[if lte IE 8]><script src="_themes/directive/assets/js/ie/respond.min.js"></script><![endif]-->
 	<script src="_themes/directive/assets/js/main.js"></script>
+
+	<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 
 </body>
 </html>
