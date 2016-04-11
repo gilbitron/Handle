@@ -65,6 +65,9 @@ class BuildCommand extends Command
             }
         } catch (\Exception $e) {
             $output->writeln('<error>' . $e->getMessage() . '</error>');
+            if ($output->isDebug()) {
+                $output->writeln('<error>' . $e->getTraceAsString() . '</error>');
+            }
         }
     }
 
