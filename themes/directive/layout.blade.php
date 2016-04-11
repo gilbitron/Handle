@@ -4,9 +4,9 @@
 	<title>{{ $title }}</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<!--[if lte IE 8]><script src="_themes/directive/assets/js/ie/html5shiv.js"></script><![endif]-->
-	<link rel="stylesheet" href="_themes/directive/assets/css/main.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="_themes/directive/assets/css/ie8.css" /><![endif]-->
+	<!--[if lte IE 8]><script src="themes/directive/assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="themes/directive/assets/css/main.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="themes/directive/assets/css/ie8.css" /><![endif]-->
 
 	<script>
 	if (window.location.host == "gilbitron.github.io" && window.location.protocol != 'https:') {
@@ -54,11 +54,11 @@
 	</div>
 
 	<!-- Scripts -->
-	<script src="_themes/directive/assets/js/jquery.min.js"></script>
-	<script src="_themes/directive/assets/js/skel.min.js"></script>
-	<script src="_themes/directive/assets/js/util.js"></script>
-	<!--[if lte IE 8]><script src="_themes/directive/assets/js/ie/respond.min.js"></script><![endif]-->
-	<script src="_themes/directive/assets/js/main.js"></script>
+	<script src="themes/directive/assets/js/jquery.min.js"></script>
+	<script src="themes/directive/assets/js/skel.min.js"></script>
+	<script src="themes/directive/assets/js/util.js"></script>
+	<!--[if lte IE 8]><script src="themes/directive/assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="themes/directive/assets/js/main.js"></script>
 
 	<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 
