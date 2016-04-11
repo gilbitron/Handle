@@ -157,16 +157,18 @@ class BuildCommand extends Command
      */
     protected function getContentFiles($contentPath)
     {
-        $contentFiles = [];
-        $rdi          = new \RecursiveDirectoryIterator($contentPath);
-        $rii          = new \RecursiveIteratorIterator($rdi);
-        foreach ($rii as $fileInfo) {
-            if ($fileInfo->isFile() && $fileInfo->getExtension() == 'md') {
-                $contentFiles[] = $fileInfo->getPathname();
-            }
-        }
+        return $this->getAllFilesFromDir($contentPath, 'md');
+    }
 
-        return $contentFiles;
+    /**
+     * Get all of the template files from the current theme
+     *
+     * @param string $currentThemePath
+     * @return array
+     */
+    protected function getThemeFiles($currentThemePath)
+    {
+        return $this->getAllFilesFromDir($currentThemePath, 'php');
     }
 
     /**
@@ -214,6 +216,37 @@ class BuildCommand extends Command
         }
 
         return $content;
+    }
+
+    /**
+     * Get all files (including subfiles) from a directory
+     *
+     * @param string $directory
+     * @param string $extension
+     * @return array
+     */
+    private function getAllFilesFromDir($directory, $extension = '')
+    {
+        if (!is_dir($directory)) {
+            return [];
+        }
+
+        $files = [];
+        $rdi   = new \RecursiveDirectoryIterator($directory);
+        $rii   = new \RecursiveIteratorIterator($rdi);
+        foreach ($rii as $fileInfo) {
+            if ($fileInfo->isFile()) {
+                if ($extension) {
+                    if ($fileInfo->getExtension() == $extension) {
+                        $files[] = $fileInfo->getPathname();
+                    }
+                } else {
+                    $files[] = $fileInfo->getPathname();
+                }
+            }
+        }
+
+        return $files;
     }
 
     /**
