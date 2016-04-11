@@ -27,11 +27,14 @@ class BuildCommand extends Command
         'template' => 'index',
     ];
 
+    private $fileManifest = [];
+
     protected function configure()
     {
         $this->setName('build')
              ->setDescription('Build your Handle site by generating the static output')
-             ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path to your Handle site');
+             ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path to your Handle site')
+             ->addOption('watch', null, InputOption::VALUE_NONE, 'Constantly watch for changes to your Handle site and build when a change is detected');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -41,9 +44,10 @@ class BuildCommand extends Command
             $path = getcwd();
         }
 
-        try {
-            $config = $this->getConfig($path);
+        $watch = $input->getOption('watch');
 
+        try {
+            $config                 = $this->getConfig($path);
             $config['cache_path']   = $this->prepPath($config['cache_path'], $path . DIRECTORY_SEPARATOR . '_cache', 'cache');
             $config['content_path'] = $this->prepPath($config['content_path'], $path . DIRECTORY_SEPARATOR . '_content', 'content');
             $config['themes_path']  = $this->prepPath($config['themes_path'], $path . DIRECTORY_SEPARATOR . '_themes', 'themes');
@@ -54,40 +58,95 @@ class BuildCommand extends Command
                 throw new \Exception('The theme "' . $themePath . '" does not exist');
             }
 
-            $renderer = $this->getRenderer($themePath, $config['cache_path']);
-
-            $output->writeln('Cleaning...');
-            $this->cleanBuiltContent($config['build_path'], $output);
-
-            $output->writeln('Building...');
-            $contentFiles = $this->getContentFiles($config['content_path']);
-            foreach ($contentFiles as $contentFile) {
-                $content       = file_get_contents($contentFile);
-                $meta          = $this->parseMeta($content);
-                $parsedContent = $this->parseContent($content);
-
-                $filename     = basename($contentFile, '.md');
-                $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile));
-                $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
-
-                if (!is_dir($filepath)) {
-                    mkdir($filepath, 0777, true);
-                }
-
-                $html = $renderer->render($meta['template'], [
-                    'config'  => $config,
-                    'title'   => $meta['title'],
-                    'content' => $parsedContent,
-                ]);
-                file_put_contents($fullFilepath, $html);
-
-                $output->writeln(str_replace($config['build_path'], '', $fullFilepath) . ' generated...');
+            if ($watch) {
+                $this->runWatch($config, $input, $output);
+            } else {
+                $this->runBuild($config, $input, $output);
             }
-
-            $output->writeln('<info>Finished building site</info>');
         } catch (\Exception $e) {
             $output->writeln('<error>' . $e->getMessage() . '</error>');
         }
+    }
+
+    /**
+     * Run the build command
+     *
+     * @param array $config
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param bool $isWatch
+     */
+    protected function runBuild($config, InputInterface $input, OutputInterface $output, $isWatch = false)
+    {
+        $renderer = $this->getRenderer($config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme'], $config['cache_path']);
+
+        $output->writeln('Cleaning...');
+        $this->cleanBuiltContent($config['build_path'], $output);
+
+        $output->writeln('Building...');
+        $contentFiles = $this->getContentFiles($config['content_path']);
+        foreach ($contentFiles as $contentFile) {
+            $content       = file_get_contents($contentFile);
+            $meta          = $this->parseMeta($content);
+            $parsedContent = $this->parseContent($content);
+
+            $filename     = basename($contentFile, '.md');
+            $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile));
+            $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
+
+            if (!is_dir($filepath)) {
+                mkdir($filepath, 0777, true);
+            }
+
+            $html = $renderer->render($meta['template'], [
+                'config'  => $config,
+                'title'   => $meta['title'],
+                'content' => $parsedContent,
+            ]);
+            file_put_contents($fullFilepath, $html);
+
+            $output->writeln(str_replace($config['build_path'], '', $fullFilepath) . ' generated...');
+        }
+
+        $output->writeln('<info>Finished building site</info>');
+
+        if ($isWatch) {
+            $output->writeln('<info>Watching for changes...</info>');
+        }
+    }
+
+    /**
+     * Watch for file changes and trigger the build command if required
+     *
+     * @param array $config
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function runWatch($config, InputInterface $input, OutputInterface $output)
+    {
+        $changedFileCount = 0;
+
+        $contentFiles = $this->getContentFiles($config['content_path']);
+        $themeFiles   = $this->getThemeFiles($config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme']);
+        $filesToWatch = array_merge([], $contentFiles, $themeFiles);
+
+        foreach ($filesToWatch as $file) {
+            $fileModified = filemtime($file);
+
+            if (!isset($this->fileManifest[$file]) || $this->fileManifest[$file] != $fileModified) {
+                $changedFileCount++;
+            }
+
+            $this->fileManifest[$file] = filemtime($file);
+        }
+
+        if ($changedFileCount) {
+            $output->writeln('Detected changes to ' . number_format($changedFileCount) . ' file(s)...');
+            $this->runBuild($config, $input, $output, true);
+        }
+
+        sleep(1);
+        $this->runWatch($config, $input, $output);
     }
 
     /**
