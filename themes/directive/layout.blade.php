@@ -9,7 +9,7 @@
 	<!--[if lte IE 8]><link rel="stylesheet" href="themes/directive/assets/css/ie8.css" /><![endif]-->
 
 	<script>
-	if (window.location.host == "gilbitron.github.io" && window.location.protocol != 'https:') {
+	if ((window.location.host == "gilbitron.github.io" || window.location.host == "handlecli.com") && window.location.protocol != 'https:') {
 		window.location.protocol = 'https';
 	}
 	</script>
