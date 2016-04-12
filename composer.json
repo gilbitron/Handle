@@ -1,6 +1,6 @@
 {
     "name": "gilbitron/handle",
-    "description": "A CLI based static site generator in PHP",
+    "description": "A static site generator powered by PHP and the command line",
     "keywords": ["cli", "static", "site", "generator"],
     "license": "MIT",
     "repositories": [

@@ -3,7 +3,7 @@
 
 # Handle
 
-A CLI based static site generator in PHP.
+A static site generator powered by PHP and the command line.
 
 ## Requirements
 
