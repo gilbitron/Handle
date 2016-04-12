@@ -76,6 +76,9 @@ The structure of the files in the `_content` folder will be honoured in the gene
  `_content/work/index.md`   | `/work`        
  `_content/work/project.md` | `/work/project`
  
+ Note that the `build` command also has a `--watch` option if you want to watch for file changes and trigger
+ automatic builds while you are working.
+ 
 ## Customization
  
 ### File Meta
