@@ -94,8 +94,13 @@ class BuildCommand extends Command
             $parsedContent = $this->parseContent($content);
 
             $filename     = basename($contentFile, '.md');
-            $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile));
-            $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
+            if ($filename == 'index') {
+                $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile));
+                $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
+            } else {
+                $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile)) . DIRECTORY_SEPARATOR . $filename;
+                $fullFilepath = $filepath . DIRECTORY_SEPARATOR . 'index.html';
+            }
 
             if (!is_dir($filepath)) {
                 mkdir($filepath, 0777, true);

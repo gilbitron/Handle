@@ -30,5 +30,8 @@ class BuildCommandTest extends HandleTestCase
         ]);
 
         $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'index.html');
+        $this->assertFileExists($this->sitePath . DIRECTORY_SEPARATOR . 'about' . DIRECTORY_SEPARATOR . 'index.html');
+        $this->assertContains('Welcome to your Handle site!', file_get_contents($this->sitePath . DIRECTORY_SEPARATOR . 'index.html'));
+        $this->assertContains('This is a test page.', file_get_contents($this->sitePath . DIRECTORY_SEPARATOR . 'about' . DIRECTORY_SEPARATOR . 'index.html'));
     }
 }
