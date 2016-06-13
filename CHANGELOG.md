@@ -1,5 +1,10 @@
 # Handle Changelog
 
+Version 0.1.2 - 2016.06.13
+--------------------------
+ * Changed: Improved the `build --watch` implementation
+ * Changed: Build only required content when content changes
+
 Version 0.1.1 - 2016.06.02
 --------------------------
  * New: Pretty permalinks (removed .htaccess)
