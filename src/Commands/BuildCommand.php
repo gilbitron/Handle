@@ -48,9 +48,12 @@ class BuildCommand extends Command
 
         try {
             $config                 = $this->getConfig($path);
-            $config['cache_path']   = $this->prepPath($config['cache_path'], $path . DIRECTORY_SEPARATOR . '_cache', 'cache');
-            $config['content_path'] = $this->prepPath($config['content_path'], $path . DIRECTORY_SEPARATOR . '_content', 'content');
-            $config['themes_path']  = $this->prepPath($config['themes_path'], $path . DIRECTORY_SEPARATOR . '_themes', 'themes');
+            $config['cache_path']   = $this->prepPath($config['cache_path'], $path . DIRECTORY_SEPARATOR .
+                                                                             '_cache', 'cache');
+            $config['content_path'] = $this->prepPath($config['content_path'], $path . DIRECTORY_SEPARATOR .
+                                                                               '_content', 'content');
+            $config['themes_path']  = $this->prepPath($config['themes_path'], $path . DIRECTORY_SEPARATOR .
+                                                                              '_themes', 'themes');
             $config['build_path']   = $this->prepPath($config['build_path'], $path, 'build');
 
             $themePath = $config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme'];
@@ -82,7 +85,8 @@ class BuildCommand extends Command
      */
     protected function runBuild($config, InputInterface $input, OutputInterface $output, $isWatch = false, $singleContentFile = null)
     {
-        $renderer = $this->getRenderer($config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme'], $config['cache_path']);
+        $renderer = $this->getRenderer($config['themes_path'] . DIRECTORY_SEPARATOR .
+                                       $config['theme'], $config['cache_path']);
 
         if ($singleContentFile) {
             $output->writeln('Cleaning...');
@@ -107,12 +111,13 @@ class BuildCommand extends Command
             $meta          = $this->parseMeta($content);
             $parsedContent = $this->parseContent($content);
 
-            $filename     = basename($contentFile, '.md');
+            $filename = basename($contentFile, '.md');
             if ($filename == 'index') {
                 $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile));
                 $fullFilepath = $filepath . DIRECTORY_SEPARATOR . $filename . '.html';
             } else {
-                $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile)) . DIRECTORY_SEPARATOR . $filename;
+                $filepath     = str_replace($config['content_path'], $config['build_path'], dirname($contentFile)) .
+                                DIRECTORY_SEPARATOR . $filename;
                 $fullFilepath = $filepath . DIRECTORY_SEPARATOR . 'index.html';
             }
 
