@@ -78,8 +78,9 @@ class BuildCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param bool $isWatch
+     * @param string|null $singleContentFile
      */
-    protected function runBuild($config, InputInterface $input, OutputInterface $output, $isWatch = false)
+    protected function runBuild($config, InputInterface $input, OutputInterface $output, $isWatch = false, $singleContentFile = null)
     {
         $renderer = $this->getRenderer($config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme'], $config['cache_path']);
 
@@ -132,29 +133,26 @@ class BuildCommand extends Command
      */
     protected function runWatch($config, InputInterface $input, OutputInterface $output)
     {
-        $changedFileCount = 0;
+        // Run the initial build
+        $this->runBuild($config, $input, $output, true);
 
-        $contentFiles = $this->getContentFiles($config['content_path']);
-        $themeFiles   = $this->getThemeFiles($config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme']);
-        $filesToWatch = array_merge([], $contentFiles, $themeFiles);
+        $files   = new \Illuminate\Filesystem\Filesystem;
+        $tracker = new \JasonLewis\ResourceWatcher\Tracker;
+        $watcher = new \JasonLewis\ResourceWatcher\Watcher($tracker, $files);
 
-        foreach ($filesToWatch as $file) {
-            $fileModified = filemtime($file);
+        $contentListener = $watcher->watch($config['content_path']);
+        $contentListener->anything(function ($event, $resource, $path) use ($config, $input, $output) {
+            $output->writeln('Content file changed: ' . str_replace($config['build_path'], '', $path));
+            $this->runBuild($config, $input, $output, true, $path);
+        });
 
-            if (!isset($this->fileManifest[$file]) || $this->fileManifest[$file] != $fileModified) {
-                $changedFileCount++;
-            }
-
-            $this->fileManifest[$file] = filemtime($file);
-        }
-
-        if ($changedFileCount) {
-            $output->writeln('Detected changes to ' . number_format($changedFileCount) . ' file(s)...');
+        $themeListener = $watcher->watch($config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme']);
+        $themeListener->anything(function ($event, $resource, $path) use ($config, $input, $output) {
+            $output->writeln('Theme file changed: ' . str_replace($config['build_path'], '', $path));
             $this->runBuild($config, $input, $output, true);
-        }
+        });
 
-        sleep(1);
-        $this->runWatch($config, $input, $output);
+        $watcher->start();
     }
 
     /**
