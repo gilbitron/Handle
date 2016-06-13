@@ -84,12 +84,25 @@ class BuildCommand extends Command
     {
         $renderer = $this->getRenderer($config['themes_path'] . DIRECTORY_SEPARATOR . $config['theme'], $config['cache_path']);
 
-        $output->writeln('Cleaning...');
-        $this->cleanBuiltContent($config['build_path'], $output);
+        if ($singleContentFile) {
+            $output->writeln('Cleaning...');
+            $this->cleanBuiltContent(str_replace($config['content_path'], $config['build_path'], dirname($singleContentFile)), $output);
+
+            $contentFiles = [$singleContentFile];
+        } else {
+            $output->writeln('Cleaning...');
+            $this->cleanBuiltContent($config['build_path'], $output);
+
+            $contentFiles = $this->getContentFiles($config['content_path']);
+        }
 
         $output->writeln('Building...');
-        $contentFiles = $this->getContentFiles($config['content_path']);
         foreach ($contentFiles as $contentFile) {
+            if (!file_exists($contentFile)) {
+                $output->writeln('<error>Content file does not exist: ' . $contentFile . '</error>');
+                continue;
+            }
+
             $content       = file_get_contents($contentFile);
             $meta          = $this->parseMeta($content);
             $parsedContent = $this->parseContent($content);
