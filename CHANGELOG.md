@@ -1,5 +1,9 @@
 # Handle Changelog
 
+Version 0.1.3 - 2016.06.14
+--------------------------
+ * Changed: Include content meta in templates
+
 Version 0.1.2 - 2016.06.13
 --------------------------
  * Changed: Improved the `build --watch` implementation
