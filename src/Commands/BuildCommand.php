@@ -129,6 +129,7 @@ class BuildCommand extends Command
                 'config'  => $config,
                 'title'   => $meta['title'],
                 'content' => $parsedContent,
+                'meta'    => $meta,
             ]);
             file_put_contents($fullFilepath, $html);
 
