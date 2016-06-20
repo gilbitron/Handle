@@ -1,5 +1,10 @@
 # Handle Changelog
 
+Version 0.1.4 - 2016.06.20
+--------------------------
+ * New: Added `slug` template variable
+ * New: Added `build_path` template variable
+
 Version 0.1.3 - 2016.06.14
 --------------------------
  * Changed: Include content meta in templates
