@@ -125,11 +125,15 @@ class BuildCommand extends Command
                 mkdir($filepath, 0777, true);
             }
 
+            $slug = '/' . ltrim(str_replace($config['build_path'], '', $filepath), '/');
+
             $html = $renderer->render($meta['template'], [
-                'config'  => $config,
-                'title'   => $meta['title'],
-                'content' => $parsedContent,
-                'meta'    => $meta,
+                'config'     => $config,
+                'title'      => $meta['title'],
+                'slug'       => $slug,
+                'content'    => $parsedContent,
+                'meta'       => $meta,
+                'build_path' => $config['build_path'],
             ]);
             file_put_contents($fullFilepath, $html);
 
