@@ -2,6 +2,12 @@
 
 A static site generator powered by PHP and the command line.
 
+The Handle CLI takes your Markdown content and Blade theme files and generates a static site 
+(HTML) for you. It's fast, flexible and powerful.
+
+[![Build Status](https://travis-ci.org/gilbitron/Handle.svg?branch=master)](https://travis-ci.org/gilbitron/Handle)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+
 ## Requirements
 
 * PHP v5.6+
@@ -10,21 +16,21 @@ A static site generator powered by PHP and the command line.
 
 First, download the latest version using `wget` or `curl` and extract the `phar` file and the public key.
 
-```
+```shell
 curl -O https://raw.githubusercontent.com/gilbitron/Handle/gh-pages/handle.tar.gz
 tar -zxvf handle.tar.gz
 ```
 
 Then, check if it works:
 
-```
+```shell
 php handle.phar
 ```
 
 To install the `handle` command globally (instead of just using `handle.phar` in the download directory) you need to 
 make the file executable and move it to somewhere in your `PATH`.
 
-```
+```shell
 chmod +x handle.phar
 sudo mv handle.phar /usr/local/bin/handle
 sudo mv handle.phar.pubkey /usr/local/bin/handle.pubkey
@@ -42,7 +48,7 @@ Updates can be done using the `handle update` command. Updates can be rolled bac
 
 The `init` command will create the initial file structure that you require to build a Handle site.
 
-```
+```shell
 handle init
 ```
 
@@ -57,7 +63,7 @@ The following folders and files should now be available:
 
 The `build` command will generate a static site (HTML files) from the Markdown files in your `_content` folder.
 
-```
+```shell
 handle build
 ```
 
