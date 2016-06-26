@@ -1,7 +1,0 @@
-/.idea
-/.travis
-/tests
-/vendor
-/_cache/*
-!/_cache/.gitkeep
-composer.lock
