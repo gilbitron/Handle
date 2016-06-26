@@ -1,109 +1,54 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
 <head>
-	<title>Handle - A static site generator powered by PHP and the command line</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<!--[if lte IE 8]><script src="themes/directive/assets/js/ie/html5shiv.js"></script><![endif]-->
-	<link rel="stylesheet" href="themes/directive/assets/css/main.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="themes/directive/assets/css/ie8.css" /><![endif]-->
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width">
 
-	<script>
-	if ((window.location.host == "gilbitron.github.io" || window.location.host == "handlecli.com") && window.location.protocol != 'https:') {
-		window.location.protocol = 'https';
-	}
-	</script>
+  <title>Handle - A static site generator powered by PHP and the command line</title>
 
-	<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-3892196-78', 'auto');
-	ga('send', 'pageview');
-	</script>
+  <!-- Flatdoc -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/legacy.js'></script>
+  <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/flatdoc.js'></script>
+
+  <!-- Flatdoc theme -->
+  <link  href='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/style.css' rel='stylesheet'>
+  <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/script.js'></script>
+
+  <!-- Meta -->
+  <meta content="Handle" property="og:title">
+  <meta content="A static site generator powered by PHP and the command line." name="description">
+
+  <!-- Initializer -->
+  <script>
+    Flatdoc.run({
+      fetcher: Flatdoc.file('docs.md')
+    });
+  </script>
 </head>
-<body>
+<body role='flatdoc'>
 
-	<!-- Header -->
-	<div id="header">
-		<span class="logo icon fa-book"></span>
-		<h1>Handle</h1>
-		<p>A static site generator powered by PHP and the command line.</p>
-	</div>
+  <div class='header'>
+    <div class='left'>
+      <h1>Handle</h1>
+      <ul>
+        <li><a href='https://github.com/gilbitron/handle'>View on GitHub</a></li>
+        <li><a href='https://github.com/gilbitron/handle/issues'>Issues</a></li>
+      </ul>
+    </div>
+    <div class='right'>
+      <!-- GitHub buttons: see http://ghbtns.com -->
+      <iframe src="http://ghbtns.com/github-btn.html?user=gilbitron&amp;repo=handle&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+    </div>
+  </div>
 
-	<!-- Main -->
-	<div id="main">
-
-			<header class="major container 75%">
-		<h2>Handle is a blazing fast static site generator powered by PHP and the command line.</h2>
-	</header>
-
-	<div class="box alt container">
-		<section class="feature left">
-			<a href="#" class="image icon fa-code"><img src="themes/directive/images/pic01.jpg" alt="" /></a>
-			<div class="content">
-				<h3>Powered by the Command Line</h3>
-				<p>Made for developers, Handle enables flexible content generation and deployments using the CLI. You don't even need to run PHP on your deployment server!</p>
-			</div>
-		</section>
-		<section class="feature right">
-			<a href="#" class="image icon fa-pencil"><img src="themes/directive/images/pic02.jpg" alt="" /></a>
-			<div class="content">
-				<h3>Easy Markdown Content Editing</h3>
-				<p>Markdown is the new standard for content editing, and flat files (i.e. the lack of a database) makes your Handle website simple to run and ultra performant (it's just HTML after all).</p>
-			</div>
-		</section>
-		<section class="feature left">
-			<a href="#" class="image icon fa-file-code-o"><img src="themes/directive/images/pic03.jpg" alt="" /></a>
-			<div class="content">
-				<h3>Powerful Blade Templating</h3>
-				<p>Blade templating (created for the popular Laravel framework) makes creating themes for your Handle website easy and very flexbile. Creating websites has never been easier!</p>
-			</div>
-		</section>
-	</div>
-
-	<footer class="major container 75%">
-		<h3>Get Started</h3>
-		<p>Get your Handle site up and running in a matter of minutes.</p>
-		<ul class="actions">
-			<li><a href="https://github.com/gilbitron/Handle" class="button">Download & Docs</a></li>
-		</ul>
-	</footer>
-
-	</div>
-
-	<!-- Footer -->
-	<div id="footer">
-		<div class="container 75%">
-
-			<header class="major last"></header>
-
-			<a class="github-button" href="https://github.com/gilbitron/Handle" data-icon="octicon-star" data-style="mega" data-count-href="/gilbitron/Handle/stargazers" data-count-api="/repos/gilbitron/Handle#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star gilbitron/Handle on GitHub">Star</a>
-			<br><br>
-
-			<ul class="icons">
-				<li><a href="https://twitter.com/gilbitron" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-				<li><a href="https://github.com/gilbitron" class="icon fa-github"><span class="label">Github</span></a></li>
-			</ul>
-
-			<ul class="copyright">
-				<li>Handle was created by <a href="http://gilbert.pellegrom.me/">Gilbert Pellegrom</a> from
-					<a href="http://dev7studios.com/">Dev7studios</a>.<br>
-					Released under the MIT license.</li>
-			</ul>
-
-		</div>
-	</div>
-
-	<!-- Scripts -->
-	<script src="themes/directive/assets/js/jquery.min.js"></script>
-	<script src="themes/directive/assets/js/skel.min.js"></script>
-	<script src="themes/directive/assets/js/util.js"></script>
-	<!--[if lte IE 8]><script src="themes/directive/assets/js/ie/respond.min.js"></script><![endif]-->
-	<script src="themes/directive/assets/js/main.js"></script>
-
-	<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+  <div class='content-root'>
+    <div class='menubar'>
+      <div class='menu section' role='flatdoc-menu'></div>
+    </div>
+    <div role='flatdoc-content' class='content'></div>
+  </div>
 
 </body>
 </html>
