@@ -12,4 +12,4 @@ See [handlecli.com](https://handlecli.com/) for full documentation.
 ## Credits
 
 Handle was created by [Gilbert Pellegrom](http://gilbert.pellegrom.me) from
-[Dev7studios](http://dev7studios.com). Released under the MIT license.
+[Dev7studios](http://dev7studios.co). Released under the MIT license.
